@@ -82,11 +82,11 @@
  * @param contourLevel - Contour level for line.
  */
 
-var points_equal = function(a, b) {
+var pointsEqual = function(a, b) {
   return Util.hypot(a.x - b.x, a.y - b.y) < 1e-5;
 }
 
-var reverse_list = function(list) {
+var reverseList = function(list) {
   var pp = list.head;
 
   while (pp) {
@@ -142,19 +142,19 @@ ContourBuilder.prototype.addSegment = function(a, b) {
   while (ss) {
     if (ma == null) {
       // no match for a yet
-      if (points_equal(a, ss.head.p)) {
+      if (pointsEqual(a, ss.head.p)) {
         ma = ss;
         prependA = true;
-      } else if (points_equal(a, ss.tail.p)) {
+      } else if (pointsEqual(a, ss.tail.p)) {
         ma = ss;
       }
     }
     if (mb == null) {
       // no match for b yet
-      if (points_equal(b, ss.head.p)) {
+      if (pointsEqual(b, ss.head.p)) {
         mb = ss;
         prependB = true;
-      } else if (points_equal(b, ss.tail.p)) {
+      } else if (pointsEqual(b, ss.tail.p)) {
         mb = ss;
       }
     }
@@ -246,7 +246,7 @@ ContourBuilder.prototype.addSegment = function(a, b) {
       switch((prependA ? 1 : 0) | (prependB ? 2 : 0)) {
         case 0:   // tail-tail
           // reverse ma and append to mb
-          reverse_list(ma);
+          reverseList(ma);
           // fall through to head/tail case
         case 1:   // head-tail
           // ma is appended to mb and ma discarded
@@ -260,7 +260,7 @@ ContourBuilder.prototype.addSegment = function(a, b) {
   
         case 3:   // head-head
           // reverse ma and append mb to it
-          reverse_list(ma);
+          reverseList(ma);
           // fall through to tail/head case
         case 2:   // tail-head
           // mb is appended to ma and mb is discarded
