@@ -1,6 +1,14 @@
 This is a JavaScript implementation of the CONREC contouring algorithm, which
 operates on a grid of z-values.
 
-I'm working on an updated version, which generates vectors for each contour
-rather than drawing contour segments one at a time in varying orders.  Watch
-this space.
+If no contour-drawing function is specified, it builds a list of contour
+vectors that can be accessed via the contours property.
+
+Example:
+
+    var data = [[0, 1, 0], [1, 2, 1], [0, 1, 0]];
+    var c = new Conrec();
+    c.contour(data, 0, 2, 0, 2, [1, 2, 3], [1, 2, 3], 3, [0, 1, 2]);
+    // c.contours should now contain vectors in the form of doubly-linked lists.
+
+To do: convert doubly-linked lists into arrays for convenience.

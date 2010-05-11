@@ -105,15 +105,6 @@ var reverseList = function(list) {
   list.tail = temp;
 }
 
-var contours = {};
-var drawContour = function(startX, startY, endX, endY, contourLevel, k) {
-  var cb = contours[k];
-  if (!cb) {
-    cb = contours[k] = new ContourBuilder(contourLevel);
-  }
-  cb.addSegment({x: startX, y: startY}, {x: endX, y: endY});
-}
-
 var ContourBuilder = function(level) {
   this.level = level;
   this.s = null;
@@ -270,20 +261,36 @@ ContourBuilder.prototype.addSegment = function(a, b) {
 
           //discard mb sequence record
           this.remove_seq(mb);
-        break;
-      }
+      break;
     }
   }
+}
 
 /**
- * @param {function} drawContour function for drawing contour.
+ * Implements CONREC.
+ *
+ * @param {function} drawContour function for drawing contour.  Defaults to a
+ *                               custom "contour builder", which populates the
+ *                               contours property.
  */
 var Conrec = function(drawContour) {
-  this.drawContour = drawContour;
-  this.h   =  new Array(5);
-  this.sh  =  new Array(5);
-  this.xh  =  new Array(5);
-  this.yh  =  new Array(5);
+  if (!drawContour) {
+    this.contours = {};
+    this.drawContour = function(startX, startY, endX, endY, contourLevel, k) {
+      var contours = this.contours;
+      var cb = contours[k];
+      if (!cb) {
+        cb = contours[k] = new ContourBuilder(contourLevel);
+      }
+      cb.addSegment({x: startX, y: startY}, {x: endX, y: endY});
+    }
+  } else {
+    this.drawContour = drawContour;
+  }
+  this.h  = new Array(5);
+  this.sh = new Array(5);
+  this.xh = new Array(5);
+  this.yh = new Array(5);
 }
 
 /**
