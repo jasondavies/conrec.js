@@ -1,0 +1,6 @@
+This is a JavaScript implementation of the CONREC contouring algorithm, which
+operates on a grid of z-values.
+
+I'm working on an updated version, which generates vectors for each contour
+rather than drawing contour segments one at a time in varying orders.  Watch
+this space.
