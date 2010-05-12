@@ -270,14 +270,36 @@ ContourBuilder.prototype.addSegment = function(a, b) {
  */
 var Conrec = function(drawContour) {
   if (!drawContour) {
-    this.contours = {};
+    var c = this;
+    c.contours = {};
     this.drawContour = function(startX, startY, endX, endY, contourLevel, k) {
-      var contours = this.contours;
-      var cb = contours[k];
+      var cb = c.contours[k];
       if (!cb) {
-        cb = contours[k] = new ContourBuilder(contourLevel);
+        cb = c.contours[k] = new ContourBuilder(contourLevel);
       }
       cb.addSegment({x: startX, y: startY}, {x: endX, y: endY});
+    }
+    this.contourList = function() {
+      var l = [];
+      var a = c.contours;
+      for (var k in a) {
+        var s = a[k].s;
+        var level = a[k].level;
+        while (s) {
+          var h = s.head;
+          var l2 = [];
+          l2.level = level;
+          l2.k = k;
+          while (h && h.p) {
+            l2.push(h.p);
+            h = h.next;
+          }
+          l.push(l2);
+          s = s.next;
+        }
+      }
+      l.sort(function(a, b) { return b.k - a.k });
+      return l;
     }
   } else {
     this.drawContour = drawContour;
@@ -312,8 +334,9 @@ var Conrec = function(drawContour) {
  * 
  */
 Conrec.prototype.contour = function(d, ilb, iub, jlb, jub, x, y, nc, z) {
-  var h = this.h, sh = this.sh, xh = this.xh, yh = this.yh,
-      drawContour = this.drawContour;
+  var h = this.h, sh = this.sh, xh = this.xh, yh = this.yh;
+  var drawContour = this.drawContour;
+  this.contours = {};
 
   /** private */
   var xsect = function(p1, p2){
