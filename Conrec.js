@@ -86,7 +86,8 @@
  */
 
 var pointsEqual = function(a, b) {
-  return Util.hypot(a.x - b.x, a.y - b.y) < 1e-5;
+  var x = a.x - b.x, y = a.y - b.y;
+  return x * x + y * y < 1e-5;
 }
 
 var reverseList = function(list) {
