@@ -217,19 +217,11 @@ ContourBuilder.prototype.addSegment = function(a, b) {
       // if the sequences are the same, do nothing, as we are simply closing this path (could set a flag)
       
       if (ma === mb) {
-        var pp = {p: a};
-
-        if (prependB) {
-          pp.next = mb.head;
-          pp.prev = null;
-          mb.head.prev = pp;
-          mb.head = pp;
-        } else {
-          pp.next = null;
-          pp.prev = mb.tail;
-          mb.tail.next = pp;
-          mb.tail = pp;
-        }
+        var pp = {p: ma.tail.p};
+        pp.next = ma.head;
+        pp.prev = null;
+        ma.head.prev = pp;
+        ma.head = pp;
         ma.closed = true;
         break;
       }
