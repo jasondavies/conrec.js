@@ -88,9 +88,11 @@
  * @param contourLevel - Contour level for line.
  */
 
+var EPSILON = 1e-10;
+
 var pointsEqual = function(a, b) {
   var x = a.x - b.x, y = a.y - b.y;
-  return x * x + y * y < 1e-5;
+  return x * x + y * y < EPSILON;
 }
 
 var reverseList = function(list) {
@@ -221,9 +223,7 @@ ContourBuilder.prototype.addSegment = function(a, b) {
       // if the sequences are the same, do nothing, as we are simply closing this path (could set a flag)
       
       if (ma === mb) {
-        var pp = {p: ma.tail.p};
-        pp.next = ma.head;
-        pp.prev = null;
+        var pp = {p: ma.tail.p, next: ma.head, prev: null};
         ma.head.prev = pp;
         ma.head = pp;
         ma.closed = true;
