@@ -6,6 +6,9 @@
  * on Paul D. Bourke's original Fortran version.  See below for the respective
  * copyright notices.
  *
+ * See http://local.wasp.uwa.edu.au/~pbourke/papers/conrec/ for the original
+ * paper by Paul D. Bourke.
+ *
  * The vector conversion code is based on http://apptree.net/conrec.htm by
  * Graham Cox.
  * 
@@ -65,7 +68,7 @@
  * triangular mesh. 
  *
  * Ported from the C++ code by Nicholas Yue (see above copyright notice).
- * @see http://astronomy.swin.edu.au/pbourke/projection/conrec/ for full description
+ * @see http://local.wasp.uwa.edu.au/~pbourke/papers/conrec/ for full description
  * of code and original C++ source.
  *
  * @author  Bradley White
