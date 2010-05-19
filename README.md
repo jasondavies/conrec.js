@@ -2,7 +2,7 @@ This is a JavaScript implementation of the CONREC contouring algorithm, which
 operates on a grid of z-values.
 
 If no contour-drawing function is specified, it builds a list of contour
-vectors that can be accessed via the .contourList().
+vectors that can be accessed via .contourList().
 
 Example:
 
