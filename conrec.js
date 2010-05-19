@@ -88,7 +88,7 @@
  * @param contourLevel - Contour level for line.
  */
 (function(exports) {
-  var EPSILON = 1e-10;
+  var EPSILON = 1e-20;
 
   var pointsEqual = function(a, b) {
     var x = a.x - b.x, y = a.y - b.y;
