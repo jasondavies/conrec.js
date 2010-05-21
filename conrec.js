@@ -87,7 +87,7 @@
  * @param endY      - end coordinate for Y
  * @param contourLevel - Contour level for line.
  */
-(function(exports) {
+var Conrec = (function() {
   var EPSILON = 1e-20;
 
   var pointsEqual = function(a, b) {
@@ -272,7 +272,7 @@
    *                               custom "contour builder", which populates the
    *                               contours property.
    */
-  var Conrec = exports.Conrec = function(drawContour) {
+  var Conrec = function(drawContour) {
     if (!drawContour) {
       var c = this;
       c.contours = {};
@@ -522,11 +522,8 @@
       }
     }
   }
-})(
-    // exports will be set in any commonjs platform; use it if it's available
-    typeof exports !== "undefined" ?
-    exports :
-    // otherwise construct a name space.  outside the anonymous function,
-    // "this" will always be "window" in a browser, even in strict mode.
-    this.CONREC = {}
-);
+  return Conrec;
+})();
+if (typeof exports !== "undefined") {
+  exports.Conrec = Conrec;
+}
