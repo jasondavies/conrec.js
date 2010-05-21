@@ -11,7 +11,7 @@
  *
  * The vector conversion code is based on http://apptree.net/conrec.htm by
  * Graham Cox.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *     * Redistributions of source code must retain the above copyright
@@ -64,15 +64,15 @@
  */
 
 /**
- * Conrec a straightforward method of contouring some surface represented a regular 
- * triangular mesh. 
+ * Conrec a straightforward method of contouring some surface represented a regular
+ * triangular mesh.
  *
  * Ported from the C++ code by Nicholas Yue (see above copyright notice).
  * @see http://local.wasp.uwa.edu.au/~pbourke/papers/conrec/ for full description
  * of code and original C++ source.
  *
  * @author  Bradley White
- * @version 1.0 
+ * @version 1.0
  */
 
 /**
@@ -103,11 +103,11 @@ var Conrec = (function() {
       var temp = pp.next;
       pp.next = pp.prev;
       pp.prev = temp;
-      
+
       // continue through the list
       pp = temp;
     }
-    
+
     // swap head/tail pointers
     var temp = list.head;
     list.head = list.tail;
@@ -138,7 +138,7 @@ var Conrec = (function() {
     var mb = null;
     var prependA = false;
     var prependB = false;
-    
+
     while (ss) {
       if (ma == null) {
         // no match for a yet
@@ -175,7 +175,7 @@ var Conrec = (function() {
         var bb = {p: b, next: null};
         aa.next = bb;
         bb.prev = aa;
-   
+
         // create sequence element and push onto head of main list. The order
         // of items in this list is unimportant
         ma = {head: aa, tail: bb, next: this.s, prev: null, closed: false};
@@ -186,7 +186,7 @@ var Conrec = (function() {
 
         ++this.count;    // not essential - tracks number of unmerged sequences
       break;
-      
+
       case 1:   // a matched, b did not - thus b extends sequence ma
         var pp = {p: b};
 
@@ -221,7 +221,7 @@ var Conrec = (function() {
 
       case 3:   // both matched, can merge sequences
         // if the sequences are the same, do nothing, as we are simply closing this path (could set a flag)
-        
+
         if (ma === mb) {
           var pp = {p: ma.tail.p, next: ma.head, prev: null};
           ma.head.prev = pp;
@@ -229,7 +229,7 @@ var Conrec = (function() {
           ma.closed = true;
           break;
         }
-        
+
         // there are 4 ways the sequence pair can be joined. The current setting of prependA and
         // prependB will tell us which type of join is needed. For head/head and tail/tail joins
         // one sequence needs to be reversed
@@ -247,7 +247,7 @@ var Conrec = (function() {
             //discard ma sequence record
             this.remove_seq(ma);
           break;
-    
+
           case 3:   // head-head
             // reverse ma and append mb to it
             reverseList(ma);
@@ -315,15 +315,15 @@ var Conrec = (function() {
   }
 
   /**
-   *     contour is a contouring subroutine for rectangularily spaced data 
+   * contour is a contouring subroutine for rectangularily spaced data
    *
-   *     It emits calls to a line drawing subroutine supplied by the user
-   *     which draws a contour map corresponding to real*4data on a randomly
-   *     spaced rectangular grid. The coordinates emitted are in the same
-   *     units given in the x() and y() arrays.
+   * It emits calls to a line drawing subroutine supplied by the user
+   * which draws a contour map corresponding to real*4data on a randomly
+   * spaced rectangular grid. The coordinates emitted are in the same
+   * units given in the x() and y() arrays.
    *
-   *     Any number of contour levels may be specified but they must be
-   *     in order of increasing value.
+   * Any number of contour levels may be specified but they must be
+   * in order of increasing value.
    *
    *
    * @param {number[][]} d - matrix of data to contour
@@ -335,7 +335,6 @@ var Conrec = (function() {
    * @param {number[]} y  - data matrix row coordinates
    * @param {number} nc - number of contour levels
    * @param {number[]} z  - contour levels in increasing order.
-   * 
    */
   Conrec.prototype.contour = function(d, ilb, iub, jlb, jub, x, y, nc, z) {
     var h = this.h, sh = this.sh, xh = this.xh, yh = this.yh;
@@ -360,12 +359,12 @@ var Conrec = (function() {
     var x2 = 0.0;
     var y1 = 0.0;
     var y2 = 0.0;
-   
+
     // The indexing of im and jm should be noted as it has to start from zero
     // unlike the fortran counter part
     var im = [0, 1, 1, 0];
     var jm = [0, 0, 1, 1];
-    
+
     // Note that castab is arranged differently from the FORTRAN code because
     // Fortran and C/C++ arrays are transposed of each other, in this case
     // it is more tricky as castab is in 3 dimensions
@@ -380,7 +379,7 @@ var Conrec = (function() {
         [9, 6, 7], [5, 2, 0], [8, 0, 0]
       ]
     ];
-    
+
     for (var j=(jub-1);j>=jlb;j--) {
       for (var i=ilb;i<=iub-1;i++) {
         var temp1, temp2;
@@ -390,7 +389,7 @@ var Conrec = (function() {
         temp1 = Math.max(d[i][j],d[i][j+1]);
         temp2 = Math.max(d[i+1][j],d[i+1][j+1]);
         dmax  = Math.max(temp1,temp2);
-        
+
         if (dmax>=z[0]&&dmin<=z[nc-1]) {
           for (var k=0;k<nc;k++) {
             if (z[k]>=dmin&&z[k]<=dmax) {
