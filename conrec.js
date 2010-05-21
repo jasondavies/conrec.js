@@ -38,55 +38,32 @@
 /*
  * Copyright (c) 1996-1997 Nicholas Yue
  *
- * This software is copyrighted by Nicholas Yue. This code is base on the work of
- * Paul D. Bourke CONREC.F routine
+ * This software is copyrighted by Nicholas Yue. This code is based on Paul D.
+ * Bourke's CONREC.F routine.
  *
  * The authors hereby grant permission to use, copy, and distribute this
  * software and its documentation for any purpose, provided that existing
- * copyright notices are retained in all copies and that this notice is included
- * verbatim in any distributions. Additionally, the authors grant permission to
- * modify this software and its documentation for any purpose, provided that
- * such modifications are not distributed without the explicit consent of the
- * authors and that existing copyright notices are retained in all copies. Some
- * of the algorithms implemented by this software are patented, observe all
- * applicable patent law.
+ * copyright notices are retained in all copies and that this notice is
+ * included verbatim in any distributions. Additionally, the authors grant
+ * permission to modify this software and its documentation for any purpose,
+ * provided that such modifications are not distributed without the explicit
+ * consent of the authors and that existing copyright notices are retained in
+ * all copies. Some of the algorithms implemented by this software are
+ * patented, observe all applicable patent law.
  *
  * IN NO EVENT SHALL THE AUTHORS OR DISTRIBUTORS BE LIABLE TO ANY PARTY FOR
  * DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT
  * OF THE USE OF THIS SOFTWARE, ITS DOCUMENTATION, OR ANY DERIVATIVES THEREOF,
  * EVEN IF THE AUTHORS HAVE BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * THE AUTHORS AND DISTRIBUTORS SPECIFICALLY DISCLAIM ANY WARRANTIES, INCLUDING,
- * BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
- * PARTICULAR PURPOSE, AND NON-INFRINGEMENT.  THIS SOFTWARE IS PROVIDED ON AN
- * "AS IS" BASIS, AND THE AUTHORS AND DISTRIBUTORS HAVE NO OBLIGATION TO PROVIDE
- * MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+ * THE AUTHORS AND DISTRIBUTORS SPECIFICALLY DISCLAIM ANY WARRANTIES,
+ * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT.  THIS SOFTWARE IS
+ * PROVIDED ON AN "AS IS" BASIS, AND THE AUTHORS AND DISTRIBUTORS HAVE NO
+ * OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR
+ * MODIFICATIONS.
  */
 
-/**
- * Conrec a straightforward method of contouring some surface represented a regular
- * triangular mesh.
- *
- * Ported from the C++ code by Nicholas Yue (see above copyright notice).
- * @see http://local.wasp.uwa.edu.au/~pbourke/papers/conrec/ for full description
- * of code and original C++ source.
- *
- * @author  Bradley White
- * @version 1.0
- */
-
-/**
- * drawContour - interface for implementing the user supplied method to
- * render the countours.
- *
- * Draws a line between the start and end coordinates.
- *
- * @param startX    - start coordinate for X
- * @param startY    - start coordinate for Y
- * @param endX      - end coordinate for X
- * @param endY      - end coordinate for Y
- * @param contourLevel - Contour level for line.
- */
 var Conrec = (function() {
   var EPSILON = 1e-20;
 
@@ -276,6 +253,18 @@ var Conrec = (function() {
     if (!drawContour) {
       var c = this;
       c.contours = {};
+      /**
+       * drawContour - interface for implementing the user supplied method to
+       * render the countours.
+       *
+       * Draws a line between the start and end coordinates.
+       *
+       * @param startX    - start coordinate for X
+       * @param startY    - start coordinate for Y
+       * @param endX      - end coordinate for X
+       * @param endY      - end coordinate for Y
+       * @param contourLevel - Contour level for line.
+       */
       this.drawContour = function(startX, startY, endX, endY, contourLevel, k) {
         var cb = c.contours[k];
         if (!cb) {
@@ -317,23 +306,23 @@ var Conrec = (function() {
   /**
    * contour is a contouring subroutine for rectangularily spaced data
    *
-   * It emits calls to a line drawing subroutine supplied by the user
-   * which draws a contour map corresponding to real*4data on a randomly
-   * spaced rectangular grid. The coordinates emitted are in the same
-   * units given in the x() and y() arrays.
+   * It emits calls to a line drawing subroutine supplied by the user which
+   * draws a contour map corresponding to real*4data on a randomly spaced
+   * rectangular grid. The coordinates emitted are in the same units given in
+   * the x() and y() arrays.
    *
-   * Any number of contour levels may be specified but they must be
-   * in order of increasing value.
+   * Any number of contour levels may be specified but they must be in order of
+   * increasing value.
    *
    *
    * @param {number[][]} d - matrix of data to contour
    * @param {number} ilb,iub,jlb,jub - index bounds of data matrix
    *
-   *             The following two, one dimensional arrays (x and y) contain the horizontal and
-   *             vertical coordinates of each sample points.
+   *             The following two, one dimensional arrays (x and y) contain
+   *             the horizontal and vertical coordinates of each sample points.
    * @param {number[]} x  - data matrix column coordinates
    * @param {number[]} y  - data matrix row coordinates
-   * @param {number} nc - number of contour levels
+   * @param {number} nc   - number of contour levels
    * @param {number[]} z  - contour levels in increasing order.
    */
   Conrec.prototype.contour = function(d, ilb, iub, jlb, jub, x, y, nc, z) {
