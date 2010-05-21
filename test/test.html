@@ -7,30 +7,31 @@
   </head>
   <body>
     <script type="text/javascript+protovis">
-      var c = new Conrec();
-      var xs = pv.range(0, data[0].length),
+      var c = new Conrec(),
+          xs = pv.range(0, data[0].length),
           ys = pv.range(0, data.length),
-          zs = pv.range(-5, 2, 1);
-      c.contour(data, 0, xs.length-1, 0, ys.length-1, xs, ys, zs.length, zs);
-      var w = 500, h = 500;
-
-      var x = pv.Scale.linear(xs).range(0, w),
-          y = pv.Scale.linear(ys).range(0, h);
-      var colours = pv.Scale.linear(zs).range("#fff", "#000");
+          zs = pv.range(-5, 2, 1),
+          w = 500, h = 500,
+          x = pv.Scale.linear(xs).range(0, w),
+          y = pv.Scale.linear(ys).range(0, h),
+          colours = pv.Scale.linear(zs).range("#fff", "#000");
 
       var vis = new pv.Panel()
           .width(w)
           .height(h)
-        .fillStyle('#fff')
-        .event("mousedown", pv.Behavior.pan())
-        .event("mousewheel", pv.Behavior.zoom());
-      var contour = vis.add(pv.Panel)
-          .data(c.contourList());
-      contour.add(pv.Line)
+          .fillStyle('#fff')
+          .event("mousedown", pv.Behavior.pan())
+          .event("mousewheel", pv.Behavior.zoom())
+        .add(pv.Panel)
+          .data(function() {
+            c.contour(data, 0, xs.length-1, 0, ys.length-1, xs, ys, zs.length, zs);
+            return c.contourList();
+          })
+        .add(pv.Line)
           .data(function(d) d)
           .left(function(d) x(d.x))
           .bottom(function(d) y(d.y))
-          .strokeStyle(function() colours(contour.data().level))
+          .strokeStyle(function() colours(this.parent.data().level))
           .lineWidth(1);
       vis.render();
     </script>
