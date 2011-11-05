@@ -1,39 +1,45 @@
+<!DOCTYPE html>
 <html>
   <head>
-    <link rel="stylesheet" href="style.css" />
-    <script type="text/javascript" src="protovis-d3.2.js"></script>
+    <title>Contour Demo</title>
+    <script type="text/javascript" src="d3.js"></script>
     <script type="text/javascript" src="../conrec.js"></script>
     <script type="text/javascript" src="multiplot.js"></script>
   </head>
   <body>
-    <script type="text/javascript+protovis">
-      var c = new Conrec(),
-          xs = pv.range(0, data[0].length),
-          ys = pv.range(0, data.length),
-          zs = pv.range(-5, 2, 1),
-          w = 500, h = 500,
-          x = pv.Scale.linear(xs).range(0, w),
-          y = pv.Scale.linear(ys).range(0, h),
-          colours = pv.Scale.linear(zs).range("#fff", "#000");
+    <script>
+      // Add a "cliff edge" to force contour lines to close along the border.
+      var cliff = -1000;
+      data.push(d3.range(data[0].length).map(function() { return cliff; }));
+      data.unshift(d3.range(data[0].length).map(function() { return cliff; }));
+      data.forEach(function(d) {
+        d.push(cliff);
+        d.unshift(cliff);
+      });
 
-      var vis = new pv.Panel()
-          .width(w)
-          .height(h)
-          .fillStyle('#fff')
-          .event("mousedown", pv.Behavior.pan())
-          .event("mousewheel", pv.Behavior.zoom())
-        .add(pv.Panel)
-          .data(function() {
-            c.contour(data, 0, xs.length-1, 0, ys.length-1, xs, ys, zs.length, zs);
-            return c.contourList();
-          })
-        .add(pv.Line)
-          .data(function(d) d)
-          .left(function(d) x(d.x))
-          .bottom(function(d) y(d.y))
-          .strokeStyle(function() colours(this.parent.data().level))
-          .lineWidth(1);
-      vis.render();
+      var c = new Conrec(),
+          xs = d3.range(0, data[0].length),
+          ys = d3.range(0, data.length),
+          zs = d3.range(-5, 3, .5),
+          w = 800,
+          h = 800,
+          x = d3.scale.linear().range([0, w]).domain([0, data[0].length]),
+          y = d3.scale.linear().range([h, 0]).domain([0, data.length]),
+          colours = d3.scale.linear().domain([-5, 3]).range(["#fff", "red"]);
+
+      c.contour(data, 0, xs.length-1, 0, ys.length-1, xs, ys, zs.length, zs);
+
+      d3.select("body").append("svg:svg")
+          .attr("width", w)
+          .attr("height", h)
+        .selectAll("path").data(c.contourList())
+        .enter().append("svg:path")
+          .style("fill",function(d) { return colours(d.level);})
+          .style("stroke","black")
+          .attr("d",d3.svg.line()
+            .x(function(d) { return x(d.x); })
+            .y(function(d) { return y(d.y); })
+          );
     </script>
   </body>
 </html>

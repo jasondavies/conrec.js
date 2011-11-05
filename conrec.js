@@ -64,15 +64,17 @@
  * MODIFICATIONS.
  */
 
-var Conrec = (function() {
-  var EPSILON = 1e-20;
+(function(exports) {
+  exports.Conrec = Conrec;
 
-  var pointsEqual = function(a, b) {
+  var EPSILON = Number.MIN_VALUE;
+
+  function pointsEqual(a, b) {
     var x = a.x - b.x, y = a.y - b.y;
     return x * x + y * y < EPSILON;
   }
 
-  var reverseList = function(list) {
+  function reverseList(list) {
     var pp = list.head;
 
     while (pp) {
@@ -91,7 +93,7 @@ var Conrec = (function() {
     list.tail = temp;
   }
 
-  var ContourBuilder = function(level) {
+  function ContourBuilder(level) {
     this.level = level;
     this.s = null;
     this.count = 0;
@@ -249,7 +251,7 @@ var Conrec = (function() {
    *                               custom "contour builder", which populates the
    *                               contours property.
    */
-  var Conrec = function(drawContour) {
+  function Conrec(drawContour) {
     if (!drawContour) {
       var c = this;
       c.contours = {};
@@ -291,7 +293,7 @@ var Conrec = (function() {
             s = s.next;
           }
         }
-        l.sort(function(a, b) { return b.k - a.k });
+        l.sort(function(a, b) { return a.k - b.k });
         return l;
       }
     } else {
@@ -510,8 +512,4 @@ var Conrec = (function() {
       }
     }
   }
-  return Conrec;
-})();
-if (typeof exports !== "undefined") {
-  exports.Conrec = Conrec;
-}
+})(typeof exports !== "undefined" ? exports : window);
