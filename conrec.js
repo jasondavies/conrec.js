@@ -370,6 +370,27 @@
         [9, 6, 7], [5, 2, 0], [8, 0, 0]
       ]
     ];
+    
+    // Add a "cliff edge" to force contour lines to close along the border.
+  
+	  // compute the "cliff size" based on the data in the array
+  	var min = d[0][0];
+  	var max = d[0][0];
+  	d.forEach(function(el){
+  		var m = d3.min(el);
+  		var M = d3.max(el);
+  		max = max > M ? max : M;
+  		min = min < m ? min : m;
+  	});
+  	var cliff = min - (max - min)*100;
+  	
+  	// add the "cliff edge"
+      d.push(d3.range(d[0].length).map(function() { return cliff; }));
+      d.unshift(d3.range(d[0].length).map(function() { return cliff; }));
+      d.forEach(function(nd) {
+        nd.push(cliff);
+        nd.unshift(cliff);
+      });
 
     for (var j=(jub-1);j>=jlb;j--) {
       for (var i=ilb;i<=iub-1;i++) {
