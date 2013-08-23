@@ -67,7 +67,7 @@
 (function(exports) {
   exports.Conrec = Conrec;
 
-  var EPSILON = Number.MIN_VALUE;
+  var EPSILON = 1e-10;
 
   function pointsEqual(a, b) {
     var x = a.x - b.x, y = a.y - b.y;
@@ -396,9 +396,9 @@
                   xh[0]=0.5*(x[i]+x[i+1]);
                   yh[0]=0.5*(y[j]+y[j+1]);
                 }
-                if (h[m]>0.0) {
+                if (h[m]>EPSILON) {
                   sh[m] = 1;
-                } else if (h[m]<0.0) {
+                } else if (h[m]<-EPSILON) {
                   sh[m] = -1;
                 } else
                   sh[m] = 0;
