@@ -1,0 +1,14 @@
+{
+  "name": "conrec",
+  "version": "1.0.0",
+  "description": "JavaScript implementation of the CONREC contouring algorithm",
+  "main": "conrec.js",
+  "types": "conrec.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/heing/conrec.js.git"
+  },
+  "author": "Jason Davies <jason@jasondavies.com>",
+  "license": "SEE LICENSE IN conrec.js",
+  "homepage": "https://github.com/jasondavies/conrec.js#readme"
+}
