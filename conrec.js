@@ -6,8 +6,8 @@
  * on Paul D. Bourke's original Fortran version.  See below for the respective
  * copyright notices.
  *
- * See http://local.wasp.uwa.edu.au/~pbourke/papers/conrec/ for the original
- * paper by Paul D. Bourke.
+ * See http://paulbourke.net/papers/conrec/ for the original paper by Paul D.
+ * Bourke.
  *
  * The vector conversion code is based on http://apptree.net/conrec.htm by
  * Graham Cox.
