@@ -27,17 +27,19 @@ var c = new Conrec,
     colours = d3.scale.linear().domain([-5, 3]).range(["#fff", "red"]);
 
 c.contour(data, 0, xs.length - 1, 0, ys.length - 1, xs, ys, zs.length, zs);
-// Sort contours by size so small ones get on top
-var contourList = c.contourList()
-    .sort(function(a, b){
-        var extentXA = d3.extent(a.map(function(d){ return d.x; }));
-        var extentYA = d3.extent(a.map(function(d){ return d.y; }));
-        var areaA = (extentXA[1] - extentXA[0]) * (extentYA[1] - extentYA[0]);
-        var extentXB = d3.extent(b.map(function(d){ return d.x; }));
-        var extentYB = d3.extent(b.map(function(d){ return d.y; }));
-        var areaB = (extentXB[1] - extentXB[0]) * (extentYB[1] - extentYB[0]);
-        return areaB - areaA;
-    });
+
+var contourList = c.contourList();
+
+contourList.forEach(function(d) {
+  d.area = Math.abs(d3.geom.polygon(d.map(function(d) {
+    return [d.x, d.y];
+  })).area());
+});
+
+// Sort contours by area
+contourList.sort(function(a, b) {
+  return b.area - a.area;
+});
 
 d3.select("body").append("svg")
     .attr("width", width)
