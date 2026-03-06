@@ -136,10 +136,9 @@
   function ContourBuilder(level) {
     this.level = level;
     this.s = null;
-    this.count = 0;
   }
-  ContourBuilder.prototype.remove_seq = function(list) {
-    // if list is the first item, static ptr s is updated
+  ContourBuilder.prototype.removeSeq = function(list) {
+    // If list is the first item, update the sequence head pointer.
     if (list.prev) {
       list.prev.next = list.next;
     } else {
@@ -149,10 +148,9 @@
     if (list.next) {
       list.next.prev = list.prev;
     }
-    --this.count;
   }
   ContourBuilder.prototype.addSegment = function(a, b) {
-    if (a.x === b.x && a.y === b.y) {
+    if (pointsEqual(a, b)) {
       return;
     }
 
@@ -199,15 +197,13 @@
         aa.next = bb;
         bb.prev = aa;
 
-        // create sequence element and push onto head of main list. The order
-        // of items in this list is unimportant
-        ma = {head: aa, tail: bb, next: this.s, prev: null, closed: false};
+        // Create the sequence and push it onto the head of the list. The order
+        // of items in this list is unimportant.
+        ma = {head: aa, tail: bb, next: this.s, prev: null};
         if (this.s) {
           this.s.prev = ma;
         }
         this.s = ma;
-
-        ++this.count;    // not essential - tracks number of unmerged sequences
       break;
 
       case 1:   // a matched, b did not - thus b extends sequence ma
@@ -249,7 +245,6 @@
           var pp = {p: ma.tail.p, next: ma.head, prev: null};
           ma.head.prev = pp;
           ma.head = pp;
-          ma.closed = true;
           break;
         }
 
@@ -267,8 +262,8 @@
             ma.head.prev = mb.tail;
             mb.tail = ma.tail;
 
-            //discard ma sequence record
-            this.remove_seq(ma);
+            // Discard ma's sequence record.
+            this.removeSeq(ma);
           break;
 
           case 3:   // head-head
@@ -281,8 +276,8 @@
             mb.head.prev = ma.tail;
             ma.tail = mb.tail;
 
-            //discard mb sequence record
-            this.remove_seq(mb);
+            // Discard mb's sequence record.
+            this.removeSeq(mb);
         break;
       }
     }
@@ -301,7 +296,7 @@
       c.contours = {};
       /**
        * drawContour - interface for implementing the user supplied method to
-       * render the countours.
+       * render the contours.
        *
        * Draws a line between the start and end coordinates.
        *
@@ -350,10 +345,10 @@
   }
 
   /**
-   * contour is a contouring subroutine for rectangularily spaced data
+   * contour is a contouring subroutine for rectangularly spaced data
    *
    * It emits calls to a line drawing subroutine supplied by the user which
-   * draws a contour map corresponding to real*4data on a randomly spaced
+   * draws a contour map corresponding to real*4 data on a randomly spaced
    * rectangular grid. The coordinates emitted are in the same units given in
    * the x() and y() arrays.
    *
@@ -374,7 +369,9 @@
   Conrec.prototype.contour = function(d, ilb, iub, jlb, jub, x, y, nc, z) {
     var h = this.h, sh = this.sh, xh = this.xh, yh = this.yh;
     var drawContour = this.drawContour;
-    this.contours = {};
+    if (this.contours !== undefined) {
+      this.contours = {};
+    }
 
     /** private */
     var xsect = function(p1, p2){
@@ -395,14 +392,14 @@
     var y1 = 0.0;
     var y2 = 0.0;
 
-    // The indexing of im and jm should be noted as it has to start from zero
-    // unlike the fortran counter part
+    // The indexing of im and jm should be noted as it has to start from zero,
+    // unlike the Fortran counterpart.
     var im = [0, 1, 1, 0];
     var jm = [0, 0, 1, 1];
 
     // Note that castab is arranged differently from the FORTRAN code because
     // Fortran and C/C++ arrays are transposed of each other, in this case
-    // it is more tricky as castab is in 3 dimensions
+    // it is trickier because castab is in 3 dimensions.
     var castab = [
       [
         [0, 0, 8], [0, 2, 5], [7, 6, 9]
@@ -431,7 +428,7 @@
               for (var m=4;m>=0;m--) {
                 if (m>0) {
                   // The indexing of im and jm should be noted as it has to
-                  // start from zero
+                  // start from zero.
                   h[m] = d[i+im[m-1]][j+jm[m-1]]-z[k];
                   xh[m] = x[i+im[m-1]];
                   yh[m] = y[j+jm[m-1]];
@@ -440,12 +437,7 @@
                   xh[0]=0.5*(x[i]+x[i+1]);
                   yh[0]=0.5*(y[j]+y[j+1]);
                 }
-                if (h[m] > 0.0) {
-                  sh[m] = 1;
-                } else if (h[m] < 0.0) {
-                  sh[m] = -1;
-                } else
-                  sh[m] = 0;
+                sh[m] = h[m] > 0.0 ? 1 : h[m] < 0.0 ? -1 : 0;
               }
               if (handleDegenerateCell(drawContour, sh, xh, yh, z[k], k)) {
                 continue;
@@ -458,8 +450,8 @@
               // Each triangle is then indexed by the parameter m, and the 3
               // vertices of each triangle are indexed by parameters m1,m2,and
               // m3.
-              // It is assumed that the centre of the box is always vertex 2
-              // though this isimportant only when all 3 vertices lie exactly on
+              // It is assumed that the centre of the box is always vertex 2,
+              // though this is important only when all 3 vertices lie exactly on
               // the same contour level, in which case only the side of the box
               // is drawn.
               //

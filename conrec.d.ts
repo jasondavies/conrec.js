@@ -29,13 +29,11 @@ declare namespace conrec {
     tail: ContourNode;
     next: ContourSequence | null;
     prev: ContourSequence | null;
-    closed: boolean;
   }
 
   interface ContourBuilder {
     level: number;
     s: ContourSequence | null;
-    count: number;
   }
 
   class Conrec {
