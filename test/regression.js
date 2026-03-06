@@ -14,15 +14,13 @@ function loadExampleData() {
   const sandbox = {};
   const source = fs.readFileSync(path.join(__dirname, "..", "example", "data.js"), "utf8");
   vm.runInNewContext(source, sandbox);
-  return sandbox.data.map(function(row) {
-    return row.slice();
-  });
+  return sandbox.data.map(row => row.slice());
 }
 
 function addCliffEdge(data, cliff) {
   data.push(new Array(data[0].length).fill(cliff));
   data.unshift(new Array(data[0].length).fill(cliff));
-  data.forEach(function(row) {
+  data.forEach(row => {
     row.push(cliff);
     row.unshift(cliff);
   });
@@ -42,15 +40,13 @@ function assertClosed(levels) {
 
   addCliffEdge(data, -1000);
 
-  const xs = Array.from({ length: data.length }, function(_, i) { return i; });
-  const ys = Array.from({ length: data[0].length }, function(_, i) { return i; });
+  const xs = Array.from({ length: data.length }, (_, i) => i);
+  const ys = Array.from({ length: data[0].length }, (_, i) => i);
 
   contour.contour(data, 0, xs.length - 1, 0, ys.length - 1, xs, ys, levels.length, levels);
 
   const contours = contour.contourList();
-  const openContours = contours.filter(function(points) {
-    return !isClosed(points);
-  });
+  const openContours = contours.filter(points => !isClosed(points));
 
   assert.strictEqual(openContours.length, 0, JSON.stringify({
     levels: levels,
@@ -83,8 +79,6 @@ function assertZeroLengthSegmentsIgnored() {
 const Conrec = loadConrec();
 
 assertClosed([0]);
-assertClosed(Array.from({ length: 16 }, function(_, i) {
-  return -5 + (i * 0.5);
-}));
+assertClosed(Array.from({ length: 16 }, (_, i) => -5 + (i * 0.5)));
 assertExactEndpointMerging();
 assertZeroLengthSegmentsIgnored();

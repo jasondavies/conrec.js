@@ -332,7 +332,7 @@
             s = s.next;
           }
         }
-        l.sort(function(a, b) { return a.k - b.k });
+        l.sort((a, b) => a.k - b.k);
         return l;
       }
     } else {

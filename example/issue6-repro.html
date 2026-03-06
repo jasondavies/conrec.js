@@ -8,9 +8,9 @@
 <script>
 
 function addCliffEdge(data, cliff) {
-  data.push(d3.range(data[0].length).map(function() { return cliff; }));
-  data.unshift(d3.range(data[0].length).map(function() { return cliff; }));
-  data.forEach(function(row) {
+  data.push(d3.range(data[0].length).map(() => cliff));
+  data.unshift(d3.range(data[0].length).map(() => cliff));
+  data.forEach(row => {
     row.push(cliff);
     row.unshift(cliff);
   });
@@ -25,7 +25,7 @@ function isClosed(points) {
 }
 
 var cliff = -1000;
-var localData = data.map(function(row) { return row.slice(); });
+var localData = data.map(row => row.slice());
 
 addCliffEdge(localData, cliff);
 
@@ -41,9 +41,7 @@ var c = new Conrec,
 c.contour(localData, 0, xs.length - 1, 0, ys.length - 1, xs, ys, zs.length, zs);
 
 var contourList = c.contourList();
-var openContours = contourList.filter(function(points) {
-  return !isClosed(points);
-});
+var openContours = contourList.filter(points => !isClosed(points));
 
 d3.select("body")
   .append("pre")
@@ -53,7 +51,7 @@ d3.select("body")
     "Contour level: 0",
     "Total contours: " + contourList.length,
     "Open contours after cliff-edge padding: " + openContours.length,
-    JSON.stringify(openContours.map(function(points) {
+    JSON.stringify(openContours.map(points => {
       return {
         level: points.level,
         length: points.length,
@@ -71,14 +69,10 @@ d3.select("body").append("svg")
   .enter().append("path")
     .style("fill", "#e76f51")
     .style("fill-opacity", 0.35)
-    .style("stroke", function(points) {
-      return isClosed(points) ? "#1d3557" : "#d00000";
-    })
-    .style("stroke-width", function(points) {
-      return isClosed(points) ? 1.5 : 3;
-    })
+    .style("stroke", points => isClosed(points) ? "#1d3557" : "#d00000")
+    .style("stroke-width", points => isClosed(points) ? 1.5 : 3)
     .attr("d", d3.svg.line()
-      .x(function(point) { return x(point.x); })
-      .y(function(point) { return y(point.y); }));
+      .x(point => x(point.x))
+      .y(point => y(point.y)));
 
 </script>

@@ -13,15 +13,13 @@ function loadExampleData() {
   const sandbox = {};
   const source = fs.readFileSync(path.join(__dirname, "data.js"), "utf8");
   vm.runInNewContext(source, sandbox);
-  return sandbox.data.map(function(row) {
-    return row.slice();
-  });
+  return sandbox.data.map(row => row.slice());
 }
 
 function addCliffEdge(data, cliff) {
   data.push(new Array(data[0].length).fill(cliff));
   data.unshift(new Array(data[0].length).fill(cliff));
-  data.forEach(function(row) {
+  data.forEach(row => {
     row.push(cliff);
     row.unshift(cliff);
   });
@@ -42,16 +40,14 @@ const cliff = -1000;
 addCliffEdge(data, cliff);
 
 const contour = new Conrec();
-const xs = Array.from({ length: data.length }, function(_, i) { return i; });
-const ys = Array.from({ length: data[0].length }, function(_, i) { return i; });
+const xs = Array.from({ length: data.length }, (_, i) => i);
+const ys = Array.from({ length: data[0].length }, (_, i) => i);
 const levels = [0];
 
 contour.contour(data, 0, xs.length - 1, 0, ys.length - 1, xs, ys, levels.length, levels);
 
 const contours = contour.contourList();
-const openContours = contours.filter(function(points) {
-  return !isClosed(points);
-});
+const openContours = contours.filter(points => !isClosed(points));
 
 console.log("Cliff-edge contour repro");
 console.log("Dataset: example/data.js");
@@ -59,7 +55,7 @@ console.log("Contour levels:", JSON.stringify(levels));
 console.log("Total contours:", contours.length);
 console.log("Open contours after padding:", openContours.length);
 
-openContours.forEach(function(points, index) {
+openContours.forEach((points, index) => {
   console.log(JSON.stringify({
     contour: index,
     level: points.level,

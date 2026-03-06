@@ -9,9 +9,9 @@
 
 // Add a "cliff edge" to force contour lines to close along the border.
 var cliff = -1000;
-data.push(d3.range(data[0].length).map(function() { return cliff; }));
-data.unshift(d3.range(data[0].length).map(function() { return cliff; }));
-data.forEach(function(d) {
+data.push(d3.range(data[0].length).map(() => cliff));
+data.unshift(d3.range(data[0].length).map(() => cliff));
+data.forEach(d => {
   d.push(cliff);
   d.unshift(cliff);
 });
@@ -30,16 +30,14 @@ c.contour(data, 0, xs.length - 1, 0, ys.length - 1, xs, ys, zs.length, zs);
 
 var contourList = c.contourList();
 
-contourList.forEach(function(d) {
-  d.area = Math.abs(d3.geom.polygon(d.map(function(d) {
-    return [d.x, d.y];
+contourList.forEach(d => {
+  d.area = Math.abs(d3.geom.polygon(d.map(point => {
+    return [point.x, point.y];
   })).area());
 });
 
 // Sort contours by area
-contourList.sort(function(a, b) {
-  return b.area - a.area;
-});
+contourList.sort((a, b) => b.area - a.area);
 
 d3.select("body").append("svg")
     .attr("width", width)
@@ -47,10 +45,10 @@ d3.select("body").append("svg")
   .selectAll("path")
     .data(contourList)
   .enter().append("path")
-    .style("fill",function(d) { return colours(d.level);})
+    .style("fill", d => colours(d.level))
     .style("stroke","black")
     .attr("d", d3.svg.line()
-      .x(function(d) { return x(d.x); })
-      .y(function(d) { return y(d.y); }));
+      .x(d => x(d.x))
+      .y(d => y(d.y)));
 
 </script>
