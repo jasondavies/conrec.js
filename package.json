@@ -1,0 +1,20 @@
+{
+  "name": "conrec",
+  "version": "1.0.0",
+  "description": "JavaScript implementation of the CONREC contouring algorithm.",
+  "homepage": "https://github.com/jasondavies/conrec.js",
+  "main": "conrec.js",
+  "types": "conrec.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jasondavies/conrec.js.git"
+  },
+  "files": [
+    "README.md",
+    "conrec.js",
+    "conrec.d.ts"
+  ],
+  "scripts": {
+    "test": "node test/regression.js"
+  }
+}
