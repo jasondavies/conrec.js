@@ -1,13 +1,18 @@
 {
   "name": "conrec",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "JavaScript implementation of the CONREC contouring algorithm.",
+  "keywords": ["conrec", "contour", "isoline"],
   "homepage": "https://github.com/jasondavies/conrec.js",
   "main": "conrec.js",
   "types": "conrec.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jasondavies/conrec.js.git"
+  },
+  "author": {
+    "name": "Jason Davies",
+    "url": "https://www.jasondavies.com/"
   },
   "files": [
     "README.md",
