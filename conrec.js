@@ -93,6 +93,49 @@
     list.tail = temp;
   }
 
+  function handleDegenerateCell(drawContour, sh, xh, yh, level, k) {
+    var zeroCorners = [];
+
+    for (var zi = 1; zi <= 4; zi++) {
+      if (sh[zi] === 0) {
+        zeroCorners.push(zi);
+      }
+    }
+
+    if (zeroCorners.length !== 2) {
+      return false;
+    }
+
+    var za = zeroCorners[0];
+    var zb = zeroCorners[1];
+    var adjacent = (za === 1 && zb === 2) ||
+                   (za === 2 && zb === 3) ||
+                   (za === 3 && zb === 4) ||
+                   (za === 1 && zb === 4);
+    var other = [];
+
+    for (var oi = 1; oi <= 4; oi++) {
+      if (oi !== za && oi !== zb) {
+        other.push(oi);
+      }
+    }
+
+    // Degenerate cells with two zero-valued corners can generate duplicate or
+    // dangling segments when triangulated through the cell centre. Emit the
+    // direct contour segment instead.
+    if (adjacent) {
+      if (sh[other[0]] !== 0 && sh[other[0]] === sh[other[1]]) {
+        drawContour(xh[za], yh[za], xh[zb], yh[zb], level, k);
+        return true;
+      }
+    } else if (sh[0] === 0 && sh[other[0]] * sh[other[1]] < 0) {
+      drawContour(xh[za], yh[za], xh[zb], yh[zb], level, k);
+      return true;
+    }
+
+    return false;
+  }
+
   function ContourBuilder(level) {
     this.level = level;
     this.s = null;
@@ -402,6 +445,9 @@
                   sh[m] = -1;
                 } else
                   sh[m] = 0;
+              }
+              if (handleDegenerateCell(drawContour, sh, xh, yh, z[k], k)) {
+                continue;
               }
               //
               // Note: at this stage the relative heights of the corners and the
