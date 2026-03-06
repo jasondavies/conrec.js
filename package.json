@@ -1,6 +1,6 @@
 {
   "name": "conrec",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "JavaScript implementation of the CONREC contouring algorithm.",
   "keywords": ["conrec", "contour", "isoline"],
   "homepage": "https://github.com/jasondavies/conrec.js",
