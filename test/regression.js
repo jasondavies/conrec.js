@@ -58,9 +58,33 @@ function assertClosed(levels) {
   }, null, 2));
 }
 
+function assertExactEndpointMerging() {
+  const contour = new Conrec();
+
+  contour.drawContour(0, 0, 1, 1, 0, 0);
+  contour.drawContour(1.000001, 1, 2, 2, 0, 0);
+
+  const contours = contour.contourList();
+
+  assert.strictEqual(contours.length, 2, JSON.stringify({
+    message: "near-equal endpoints should not merge into a single contour",
+    contours: contours
+  }, null, 2));
+}
+
+function assertZeroLengthSegmentsIgnored() {
+  const contour = new Conrec();
+
+  contour.drawContour(0, 0, 0, 0, 0, 0);
+
+  assert.strictEqual(contour.contourList().length, 0);
+}
+
 const Conrec = loadConrec();
 
 assertClosed([0]);
 assertClosed(Array.from({ length: 16 }, function(_, i) {
   return -5 + (i * 0.5);
 }));
+assertExactEndpointMerging();
+assertZeroLengthSegmentsIgnored();

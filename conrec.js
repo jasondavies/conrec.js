@@ -67,11 +67,8 @@
 (function(exports) {
   exports.Conrec = Conrec;
 
-  var EPSILON = 1e-10;
-
   function pointsEqual(a, b) {
-    var x = a.x - b.x, y = a.y - b.y;
-    return x * x + y * y < EPSILON;
+    return a.x === b.x && a.y === b.y;
   }
 
   function reverseList(list) {
@@ -155,6 +152,10 @@
     --this.count;
   }
   ContourBuilder.prototype.addSegment = function(a, b) {
+    if (a.x === b.x && a.y === b.y) {
+      return;
+    }
+
     var ss = this.s;
     var ma = null;
     var mb = null;
@@ -439,9 +440,9 @@
                   xh[0]=0.5*(x[i]+x[i+1]);
                   yh[0]=0.5*(y[j]+y[j+1]);
                 }
-                if (h[m]>EPSILON) {
+                if (h[m] > 0.0) {
                   sh[m] = 1;
-                } else if (h[m]<-EPSILON) {
+                } else if (h[m] < 0.0) {
                   sh[m] = -1;
                 } else
                   sh[m] = 0;
